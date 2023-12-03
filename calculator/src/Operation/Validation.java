@@ -126,4 +126,53 @@ public class Validation {
         }
         return 0;
     }
+
+    // check validation of operators and numbers ------------------------------
+    public boolean checkValidationOfElements(String expression) {
+        int i = 0;
+        while (i < expression.length() - 1) {
+            int checkOperator = isOperator(expression, i);
+            /* if checkOperator function return i , it means this element is not an operator
+            then we need to check if it is an operand or not
+             */
+            if (checkOperator == i) {
+                int checkOperand = isOperand(expression, i);
+                if (checkOperand == i)
+                    return false;
+                else
+                    i = checkOperand;
+            } else
+                i = checkOperator;
+        }
+        return true;
+    }
+
+    private int isOperator(String expression, int firstIndexOfOperatorSymbol) {
+        for (Symbol s : validSymbols) {
+            int index = firstIndexOfOperatorSymbol;
+            for (char c : s.getSymbols().toCharArray()) {
+                if (c == expression.charAt(index))
+                    index++;
+            }
+            // index - firstIndexOfOperatorSymbol = length of symbol
+            // in this case it mean we can find it
+            if ((index - firstIndexOfOperatorSymbol) == s.getSymbols().length())
+                return index;
+
+        }
+        return firstIndexOfOperatorSymbol;
+    }
+
+    private int isOperand(String expression, int firstIndexOfOperand) {
+        int index = firstIndexOfOperand;
+        // numbers or "."
+        while (((int) expression.charAt(index) >= 48 && (int) expression.charAt(index) <= 57) || String.valueOf(expression.charAt(index)).equals(".")) {
+            index++;
+            //for handling index out of bound error
+            if (index > expression.length() - 1)
+                break;
+        }
+        return index;
+    }
+
 }
