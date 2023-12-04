@@ -49,7 +49,7 @@ public class Main {
                         String formula = sc.nextLine();
                         newOperationManager.addNewOperation(symbol , formula);
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        System.out.println(e.getMessage());
                     }
                 }
                 case 3 -> {
