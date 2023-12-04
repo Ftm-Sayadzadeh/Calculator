@@ -12,10 +12,12 @@ public class Main {
 
         while (true) {
             System.out.println("""
+                    -------------MENU------------
                     1 - calculate
                     2 - add new operation
-                    3 - show available operations
-                    0 - end
+                    3 - show available operator
+                    0 - END
+                    -----------------------------
                     """);
             int command = sc.nextInt();
 
@@ -23,6 +25,7 @@ public class Main {
                 case 0 -> System.exit(0);
                 case 1 -> {
                     sc.nextLine();
+                    System.out.println("Enter the expression :)");
                     try {
                         System.out.println(c.calculate(sc.nextLine()));
                     } catch (Exception e) {
