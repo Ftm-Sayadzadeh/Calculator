@@ -110,11 +110,14 @@ public class Calculation {
                 } else {
                     Operator operator = (Operator) symbol;
                     // when operator is Minus and used as negative sign :
-                    /* in this condition we do not pop element with greater priority
+                    /*  1) when previous operator is opening precedence or binary operator
+                        2) when it is at the first index of expression ( previous is null )
+                    in this condition we do not pop element with greater priority
                      ( -3 -> (0-3) : when we consider parentheses , we can find the reason )
                      */
-                    if (operator instanceof Minus && (previousSymbol instanceof OpeningBracket
-                            || previousSymbol instanceof OpeningParentheses || previousSymbol instanceof Binary)) {
+                    if ((operator instanceof Minus && (previousSymbol instanceof OpeningBracket
+                            || previousSymbol instanceof OpeningParentheses || previousSymbol instanceof Binary))
+                            || (operator instanceof Minus && previousSymbol == null)) {
                         result.add("0");
                         stack.push((Operator) symbol);
                         i = i + symbol.getSymbols().length();
@@ -190,6 +193,7 @@ public class Calculation {
                     stack.push(c.getValue());
                 } else {
                     // if the number has "." -> double value
+                    // ( throw exception for expression like "1.2.3" or "." )
                     if (s.contains("."))
                         stack.push(Double.parseDouble(s));
                     else
