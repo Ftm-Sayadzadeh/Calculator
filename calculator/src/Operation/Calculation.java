@@ -9,6 +9,7 @@ import models.symbol.operator.Operator;
 import models.symbol.operator.binary.*;
 import models.symbol.operator.precedence.*;
 import models.symbol.operator.unary.Factorial;
+import models.symbol.operator.unary.Unary;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -38,6 +39,26 @@ public class Calculation {
     }
 
     // METHOD : ----------------------------------------------------
+    public String calculate(String expression) throws Exception {
+        // check validation
+        Validation validation = new Validation(validSymbols);
+        validation.checkValidation(expression);
+
+        // calculation
+        ArrayList<String> postfix = this.convertInfixToPostfix(expression);
+        String answer = this.calculatePostfix(postfix);
+
+        // handel type of answer ( double or integer ) :
+        if (Objects.requireNonNull(answer).contains(".")) {
+            // we need to know type of answer cuz in integer case we need to remove ".00"
+            String[] dividedStr = Objects.requireNonNull(answer).split("\\.");
+            if (Objects.equals(dividedStr[1], "0"))
+                return dividedStr[0];
+            else
+                return answer;
+        } else
+            return answer;
+    }
 
     // convert infix to postfix before calculating expression ------------------------
     public ArrayList<String> convertInfixToPostfix(String expression) {
@@ -140,6 +161,64 @@ public class Calculation {
                 break;
         }
         return operand.toString();
+    }
+
+    // calculate postfix ------------------------------------------------------------
+    public String calculatePostfix(ArrayList<String> postfix) throws Exception {
+        Validation validation = new Validation(validSymbols);
+        LinkedStack<Number> stack = new LinkedStack<>();
+        for (String s : postfix) {
+            Operator o = validation.isOperator(s);
+            if (o != null) {
+                if (o instanceof Binary) {
+                    Number b = stack.pop();
+                    Number a = stack.pop();
+                    Number answer = ((Binary) o).operate(a, b);
+                    stack.push(answer);
+                }
+                // if o instance of Unary
+                else {
+                    Number answer = ((Unary) o).operate(stack.pop());
+                    stack.push(answer);
+                }
+            }
+            // when o is null it means s is number or constant
+            else {
+                Constant c = this.isConstant(s);
+                // if s is constant
+                if (c != null) {
+                    stack.push(c.getValue());
+                } else {
+                    // if the number has "." -> double value
+                    if (s.contains("."))
+                        stack.push(Double.parseDouble(s));
+                    else
+                        stack.push(Integer.parseInt(s));
+                }
+            }
+        }
+        if (!stack.isEmpty())
+            return stack.pop().toString();
+        else
+            return null;
+    }
+
+    private Constant isConstant(String element) {
+        Validation validation = new Validation(validSymbols);
+        for (Constant c : validation.getConstants()) {
+            int i = 0, j = 0;
+            while (c.getSymbols().charAt(j) == element.charAt(i)) {
+                i++;
+                j++;
+                // this symbol j-1 index is the last index
+                if (j >= c.getSymbols().length())
+                    break;
+            }
+            if (j == c.getSymbols().length()) {
+                return c;
+            }
+        }
+        return null;
     }
 
 }
