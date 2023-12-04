@@ -32,7 +32,7 @@ public class Main {
                 case 2 -> {
                     System.out.println("1 - Unary\n2 - Binary");
                     int operatorTypeNumber = sc.nextInt();
-                    System.out.println("first enter the name then enter the formula");
+                    System.out.println("first enter the symbol then enter the formula");
                     System.out.println("* NOTICE : a and b are consider as operand so the formula can contain them and operator");
                     NewOperationManager newOperationManager = new NewOperationManager(c, operatorTypeNumber);
                     try {
@@ -46,7 +46,8 @@ public class Main {
                 }
                 case 3 -> {
                     for (Symbol s : c.getValidSymbols())
-                        System.out.print(s.getSymbols() + " ");
+                        System.out.print(s.getSymbols() + " , ");
+                    System.out.println();
                 }
                 default -> {
                     System.out.println("Enter correct number!");

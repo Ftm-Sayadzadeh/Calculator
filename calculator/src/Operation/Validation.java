@@ -66,15 +66,15 @@ public class Validation {
     public void checkValidation(String expression) throws Exception {
         boolean matchPrecedence = matchPrecedence(expression);
         if (!matchPrecedence)
-            throw new Exception("error");
+            throw new Exception("error : precedence is not matched ");
         //------------------------------
         boolean checkValidationOfElements = checkValidationOfElements(expression);
         if (!checkValidationOfElements)
-            throw new Exception("error");
+            throw new Exception("error : validation of element");
         //------------------------------
         boolean checkValidationOfCondition = checkValidationOfCondition(expression);
         if (!checkValidationOfCondition)
-            throw new Exception("error");
+            throw new Exception("error : validation of each element condition");
     }
 
     // check precedence -----------------------------------

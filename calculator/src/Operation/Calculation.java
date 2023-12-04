@@ -117,7 +117,7 @@ public class Calculation {
                      */
                     if ((operator instanceof Minus && (previousSymbol instanceof OpeningBracket
                             || previousSymbol instanceof OpeningParentheses || previousSymbol instanceof Binary))
-                            || (operator instanceof Minus && previousSymbol == null)) {
+                            || (operator instanceof Minus && i == 0)) {
                         result.add("0");
                         stack.push((Operator) symbol);
                         i = i + symbol.getSymbols().length();
