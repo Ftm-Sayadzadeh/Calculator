@@ -32,14 +32,19 @@ public class Main {
                 case 2 -> {
                     System.out.println("1 - Unary\n2 - Binary");
                     int operatorTypeNumber = sc.nextInt();
+
                     System.out.println("first enter the symbol then enter the formula");
-                    System.out.println("* NOTICE : a and b are consider as operand so the formula can contain them and operator");
+                    if(operatorTypeNumber == 1)
+                        System.out.println("* NOTICE : a is consider as operand so the formula can contain them and operator");
+                    else if (operatorTypeNumber == 2)
+                        System.out.println("* NOTICE : a and b are consider as operand so the formula can contain them and operator");
+
                     NewOperationManager newOperationManager = new NewOperationManager(c, operatorTypeNumber);
                     try {
                         sc.nextLine();
-                        String expression = sc.nextLine();
+                        String symbol = sc.nextLine();
                         String formula = sc.nextLine();
-                        newOperationManager.addNewOperation(expression , formula);
+                        newOperationManager.addNewOperation(symbol , formula);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -49,9 +54,8 @@ public class Main {
                         System.out.print(s.getSymbols() + " , ");
                     System.out.println();
                 }
-                default -> {
+                default ->
                     System.out.println("Enter correct number!");
-                }
             }
         }
     }
